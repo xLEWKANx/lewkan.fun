@@ -15,6 +15,9 @@ class App extends Component {
   }
 
   componentDidMount() {
+    setTimeout(() => {
+      this.frame.contentWindow.document.getElementsByTagName('video')[0].style = 'width: 100%';
+    }, 1000)
     window.setInterval(this.updateTimer);
   }
 
@@ -35,6 +38,8 @@ class App extends Component {
   render() {
     return (
       <div className={styles.App}>
+        <iframe title="track" ref={frame => this.frame = frame} src={track} allow="autoplay" autoPlay={true} controls={true} className={styles.Player}>
+        </iframe>
         <div className={styles.AppCrop}>
           <img src={logo} className={styles.AppLogo} alt="logo" />
         </div>
@@ -45,7 +50,6 @@ class App extends Component {
         </p>
         Будет весело, базарю
         <MapContainer />
-        <iframe title="track" src={track} allow="autoplay" autoPlay={true} style={{display: 'none'}}></iframe>
       </div>
     );
   }
