@@ -4,6 +4,9 @@ import track from './track.mp3';
 import styles from './App.module.css';
 import MapContainer from './Map';
 
+const moons = ['🌑', '🌒', '🌓', '🌔', '🌝', '🌖', '🌗', '🌘', '🌚'];
+let count = 0;
+
 class App extends Component {
   endTime = new Date(2019, 0, 26, 18, 0);
   state = {
@@ -11,14 +14,17 @@ class App extends Component {
   }
 
   updateTimer = () => {
-    this.setState({ time: new Date(new Date(2019, 0, 26, 18, 0) - new Date()) }) 
+    window.location.hash = moons[count++ % moons.length].repeat(100);
+    this.setState({ 
+      time: new Date(new Date(2019, 0, 26, 18, 0) - new Date())
+     }) 
   }
 
   componentDidMount() {
     setTimeout(() => {
       this.frame.contentWindow.document.getElementsByTagName('video')[0].style = 'width: 100%';
     }, 1000)
-    window.setInterval(this.updateTimer);
+    window.setInterval(this.updateTimer, 1000);
   }
 
   addZero(unit) {
