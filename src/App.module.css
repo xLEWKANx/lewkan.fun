@@ -1,0 +1,65 @@
+/* @font-face {
+  font-family: 'hardcore';
+	font-weight: 500;
+	font-style: normal;
+	font-display: swap;
+	src:
+    url('./SF_Collegiate.ttf');
+}
+
+@font-face {
+  font-family: 'hardcore';
+	font-style: normal;
+	font-display: swap;
+	src:
+    url('./SF_Collegiate_Solid.ttf');
+} */
+
+html, body { 
+  width: 100%;
+}
+
+.App {
+  text-align: center;
+  background-color: black;
+  max-width: 1024px;
+  min-height: 100vh;
+  min-width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  color: white;
+  font-size: 10vw;
+}
+
+.AppCrop {
+  max-height: 700px;
+  width: 100%;
+  /* overflow: hidden; */
+  max-width: 1024px;
+}
+
+.AppLogo {
+  width: 100%;
+  stroke: 5px;
+}
+
+.Timer {
+
+  width: 80%;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
