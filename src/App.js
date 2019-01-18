@@ -35,6 +35,7 @@ class App extends Component {
   render() {
     return (
       <div className={styles.App}>
+        <video src="https://giphy.com/gifs/6wpHEQNjkd74Q/html5" autoPlay={true} muted={true} />
         <div className={styles.AppCrop}>
           <img src={logo} className={styles.AppLogo} alt="logo" />
         </div>
@@ -43,7 +44,7 @@ class App extends Component {
             {this.renderTime(this.state.time)}
           </span>
         </p>
-        Ебать, да хули тут думать, тебе сюда:
+        Будет весело, базарю
         <MapContainer />
         <iframe title="track" src={track} allow="autoplay" autoPlay={true} style={{display: 'none'}}></iframe>
       </div>

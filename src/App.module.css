@@ -30,6 +30,10 @@ html, body {
   flex-direction: column;
   color: white;
   font-size: 10vw;
+  background: url('https://media.giphy.com/media/6wpHEQNjkd74Q/giphy.gif');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: bottom;
 }
 
 .AppCrop {
