@@ -1,8 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
+import { BrowserRouter } from "react-router-dom";
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(
+	<BrowserRouter>
+		<App />
+	</BrowserRouter>,
+	document.getElementById("root")
+);
 
 console.log(`
 sexsexsexsexsexse
@@ -125,4 +131,3 @@ sex    sexsexsex    sexsexsexsex
                               xx
                               xx
 Че, фронтендер дохуя? Самый умный? Взломать решил? Че тебе надо у меня дома?`);
-
