@@ -1,41 +1,81 @@
 import React, { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 // import fire from "../images/fire.gif";
-import illusion from "../images/background_illusion_4.jpg";
+import speaker from "../images/speaker.jpg";
+
+const CIRCLE_DIAMETER = 500;
+const MAX_MEDIA_WIDTH = 1000;
 
 const Background = styled.div`
 	background-color: black;
+	color: white;
 `;
 
 const FirstScreen = styled.div`
-	background-image: url(${illusion});
-	background-size: cover;
-	background-position: 50% 50%;
 	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+
+	@media(max-width: ${MAX_MEDIA_WIDTH}px) {
+  }
+`;
+
+const Side = styled.div`
+	width: 200px;
+	padding: 20px;
+	text-align: center;
+	flex: 0 1 auto;
+
+	@media(max-width: ${MAX_MEDIA_WIDTH}px) {
+		order: 2;
+		flex: 1 1 auto;
+  }
+`;
+
+const Center = styled.div`
+	flex: 1 1 auto;
+	min-width: ${CIRCLE_DIAMETER}px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+
+	@media(max-width: ${MAX_MEDIA_WIDTH}px) {
+		height: 100%;
+		order: 1;
+		width: 100%;
+	}
 `;
 
 const rotate = keyframes`
   from {
-		opacity: 0;
-    transform: scale(0);
+    transform: scale(1);
   }
 
   to {
-		opacity: 1;
     transform: scale(1);
   }
+
+	25% {
+    transform: scale(0.9);
+	}
+
+	75% {
+    transform: scale(1.1);
+	}
 `;
 
-const Circle = styled.h1`
-	animation: 5s 1 ${rotate};
+const Speaker = styled.button`
+	border: none;
+	outline: none;
+	animation: 0.3s ease-in-out 1 ${rotate};
 	animation-play-state: ${props => (props.isRunning ? "running" : "paused")};
-	width: 500px;
-	height: 500px;
-	border-radius: 500px;
-	background-color: rgba(255, 255, 255, 0.5);
+	width: ${CIRCLE_DIAMETER}px;
+	height: ${CIRCLE_DIAMETER}px;
+	border-radius: ${CIRCLE_DIAMETER}px;
+	background-image: url(${speaker});
+	background-repeat: no-repeat;
+	background-size: contain;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -48,10 +88,9 @@ const Circle = styled.h1`
 `;
 
 const FusionContainer = styled.div`
-
 	max-width: 800px;
 	min-width: 400px;
-	background-color: rgba(0,0,0,0.5);
+	background-color: rgba(0, 0, 0, 0.5);
 	font-size: 24px;
 `;
 
@@ -70,15 +109,31 @@ const HardtekPage = () => {
 	return (
 		<Background>
 			<FirstScreen>
-				<Circle isRunning={isLoaded}>
-					<Lewkan>lewkan</Lewkan>
-					<p>x26x</p>
-					<p>birthday</p>
-					<p>fusion</p>
-				</Circle>
+				<Side>
+					starts:
+					<p>25.01.2020</p>
+					<p>23:00</p>
+				</Side>
+				<Center>
+					<Speaker isRunning={isLoaded}>
+						<Lewkan>lewkan</Lewkan>
+						<p>x26x</p>
+						<p>birthday</p>
+						<p>fusion</p>
+					</Speaker>
+				</Center>
+				<Side>
+					ends:
+					<p>26.01.2020</p>
+					<p>06:00</p>
+				</Side>
 			</FirstScreen>
 			<FusionContainer>
-				Фьюжн, фьюжен (от англ. fusion, «сплав») — термин, который может входить в название стилей и направлений в искусстве, архитектуре, дизайне, музыке, характеризующихся «сочетанием несочетаемого», то есть объединяющих в себе совершенно разные идеи из, казалось бы, несовместимых стилей, не теряя при этом целостности и гармонии.
+				Фьюжн, фьюжен (от англ. fusion, «сплав») — термин, который может входить
+				в название стилей и направлений в искусстве, архитектуре, дизайне,
+				музыке, характеризующихся «сочетанием несочетаемого», то есть
+				объединяющих в себе совершенно разные идеи из, казалось бы,
+				несовместимых стилей, не теряя при этом целостности и гармонии.
 			</FusionContainer>
 		</Background>
 	);

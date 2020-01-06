@@ -8,7 +8,6 @@ import collegeFont from "./fonts/college.otf";
 import reglisseFont from "./fonts/reglisse.otf";
 import neon from "./fonts/screaming_neon.ttf";
 
-
 createGlobalStyle`
   @font-face {
     font-family: College;
@@ -22,6 +21,16 @@ createGlobalStyle`
     font-family: Neon;
     src: url('${neon}') format('truetype');
   }
+
+	html {
+		box-sizing: border-box;
+	}
+
+	*,
+	*::before,
+	*::after {
+		box-sizing: inherit;
+	}
 `;
 
 ReactDOM.render(
