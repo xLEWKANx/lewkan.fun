@@ -2,6 +2,27 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
+import "normalize.css";
+import { createGlobalStyle } from "styled-components";
+import collegeFont from "./fonts/college.otf";
+import reglisseFont from "./fonts/reglisse.otf";
+import neon from "./fonts/screaming_neon.ttf";
+
+
+createGlobalStyle`
+  @font-face {
+    font-family: College;
+    src: url('${collegeFont}') format('opentype');
+  }
+  @font-face {
+    font-family: Reglisse;
+    src: url('${reglisseFont}') format('opentype');
+  }
+  @font-face {
+    font-family: Neon;
+    src: url('${neon}') format('truetype');
+  }
+`;
 
 ReactDOM.render(
 	<BrowserRouter>
