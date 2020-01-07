@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 // import fire from "../images/fire.gif";
 import speaker from "../images/speaker.jpg";
-import hardtekLife from "../music/track.mp3";
-import { throttle } from "lodash";
+// import hardtekLife from "../music/Hardtek Life.mp3";
+// import { throttle } from "lodash";
 import { Player } from "../components/player";
+import logo from "../images/logo.svg";
 
 const CIRCLE_DIAMETER = 500;
 const MAX_MEDIA_WIDTH = 1000;
@@ -68,6 +69,11 @@ const rotate = keyframes`
 	}
 `;
 
+const TextLogo = styled.img`
+	max-width: 95%;
+	height: 100%;
+`;
+
 const Speaker = styled.button`
 	border: none;
 	outline: none;
@@ -97,52 +103,48 @@ const FusionContainer = styled.div`
 	font-size: 24px;
 `;
 
-const Lewkan = styled.p`
-	font-size: 3em;
-	color: white;
-	-webkit-text-stroke-width: 2px;
-`;
-
-
 const SpeakerPlayer = ({ player, children }) => {
 	const [scale, setScale] = useState(1);
 	const [isLoaded, setLoad] = useState(false);
 
-	player.subscribe(
-		throttle(arr => {
-			const basses = arr.slice(5);
-			const avgSum =
+	useEffect(() => {
+		player.subscribe(
+			arr => {
+
+				const basses = arr.slice(10);
+				const avgSum =
 				basses.reduce((acc, curr) => {
 					let scale = (curr / 255) * 0.4;
 					scale = scale < 0 ? 1 : scale;
 					return acc + scale;
 				}, 0) / basses.length;
 				setScale(avgSum + 1);
-		}, 10)
-	);
+			}
+		);
+	}, [])
 
 	useEffect(() => {
 		window.addEventListener("load", () => setLoad(true));
-		player.loadTrack(hardtekLife);
-	}, [player]);
+	}, []);
 
 	const play = () => {
 		player.play();
 	};
 
-	return <Speaker
-		style={{ transform: `scale(${scale})` }}
-		isRunning={isLoaded}
-		onClick={play}
-	>
-		{children}
-	</Speaker>
-}
-
+	return (
+		<Speaker
+			style={{ transform: `scale(${scale})` }}
+			isRunning={isLoaded}
+			onClick={play}
+		>
+			<TextLogo src={logo} />
+			{children}
+		</Speaker>
+	);
+};
 
 const HardtekPage = () => {
-	const [player] = useState(new Player())
-
+	const [player] = useState(new Player());
 
 	return (
 		<Background>
@@ -153,13 +155,7 @@ const HardtekPage = () => {
 					<p>23:00</p>
 				</Side>
 				<Center>
-					<SpeakerPlayer
-						player={player}
-					>
-						<Lewkan>lewkan</Lewkan>
-						<p>x26x</p>
-						<p>birthday</p>
-						<p>fusion</p>
+					<SpeakerPlayer player={player}>
 					</SpeakerPlayer>
 				</Center>
 				<Side>
@@ -174,6 +170,8 @@ const HardtekPage = () => {
 				музыке, характеризующихся «сочетанием несочетаемого», то есть
 				объединяющих в себе совершенно разные идеи из, казалось бы,
 				несовместимых стилей, не теряя при этом целостности и гармонии.
+
+				
 			</FusionContainer>
 		</Background>
 	);

@@ -1,63 +1,120 @@
-export class Player {
-	constructor() {
-		this.audio = document.createElement('audio');
-		this.audio.controls = true;
-		document.body.prepend(this.audio)
-		this.audio.addEventListener("play", () => {
-			if (!this.context) this.initContext();
-			this.receiveFrequencyData();
-		})
-		this.audio.addEventListener("pause", () => {
-			window.cancelAnimationFrame(this.animationFrameId);
-		})
-	}
+import hardtekLife from "../music/Hardtek Life.mp3";
 
-	loadTrack(url) {
-		return new Promise((resolve, reject) => {
-			this.audio.addEventListener("canplay", () => {
-				resolve();
-			});
-			/* Reject the promise on an error. */
-			this.audio.addEventListener("error", reject);
-			this.audio.src = url;
-		});
-	}
+const FFT_SIZE = 256;
 
-	initContext() {
+export class Track {
+	isPlaying = false;
+
+	constructor(url) {
+		this.url = url;
 		this.context = new (window.AudioContext ||
 			window.webAudioContext ||
 			window.webkitAudioContext)();
-		this.source = this.context.createMediaElementSource(this.audio);
-		this.source.controls = true;
 
-		this.audio.onended = function() {
-			this.source.disconnect();
-			this.source = null;
-		};
 		this.analyser = this.context.createAnalyser();
+		this.analyser.fftSize = FFT_SIZE;
+		
+		const bufferLength = this.analyser.frequencyBinCount;
 
-		this.analyser.fftSize = 256;
-		this.source.connect(this.context.destination);
-		this.source.connect(this.analyser);
+		this.processor = this.context.createScriptProcessor(FFT_SIZE, 1, 1);
+		this.dataArray = new Uint8Array(bufferLength);
+		this.processor.connect(this.context.destination);
 
-		this.frequencyData = new Uint8Array(this.analyser.frequencyBinCount);
-	}
+		this.processor.onaudioprocess = () => {
 
-	play() {
-		if (this.audio.paused) {
-			this.audio.play();
-		} else {
-			this.audio.pause();
+			this.analyser.getByteFrequencyData(this.dataArray) // For Bits
+			console.log('this.dataArray', this.dataArray);
+			// analyser.getByteTimeDomainData(this.state.framerFrequencyData) // For Waves
+			if (this.cb) this.cb(this.dataArray);
 		}
+
+
 	}
 
-	receiveFrequencyData = () => {
-		this.animationFrameId = requestAnimationFrame(this.receiveFrequencyData);
-		this.analyser.getByteFrequencyData(this.frequencyData);
-		if (this.subscriber) this.subscriber(this.frequencyData);
+	loadTrack = () => {
+		if (this.bufferPromise) return this.bufferPromise;
+		return fetch(this.url).then(response => {
+			if (!response.ok) {
+				throw Error(`${response.status} ${response.statusText}`);
+			}
+
+			if (!response.body) {
+				throw Error("ReadableStream not yet supported in this browser.");
+			}
+
+			const contentLength = response.headers.get("content-length");
+			if (!contentLength) {
+				throw Error("Content-Length response header unavailable");
+			}
+			console.log("fetch bufer");
+			this.buffer = response.arrayBuffer();
+			return this.buffer;
+		});
+	};
+
+	decodeAudioData = () => {
+		return new Promise((resolve, reject) => {
+			this.loadTrack().then(arrayBuffer => {
+				console.log("start decode data");
+				this.context.decodeAudioData(
+					arrayBuffer,
+					buffer => {
+						const source = this.context.createBufferSource();
+						source.buffer = buffer;
+						source.loop = true;
+						source.connect(this.analyser);
+						source.connect(this.context.destination);
+
+						resolve(source);
+						source.start(0);
+						console.log("start playing");
+					},
+					reject
+				);
+			});
+		});
+	};
+
+	play = () => {
+		console.log("is source availiable", !!this.sourcePromise);
+		if (!this.sourcePromise) {
+			this.sourcePromise = this.decodeAudioData();
+		}
+
+		this.context.resume();
+		return Promise.resolve();
+	};
+
+	pause = () => {
+		this.context.suspend();
 	};
 
 	subscribe(cb) {
-		this.subscriber = cb;
+		this.cb = cb;
+	}
+}
+
+export class Player {
+	tracks = [new Track(hardtekLife)];
+	isPlaying = false;
+
+	get currentTrack () {
+		return this.tracks[0];
+	}
+
+	play() {
+		const currentTrack = this.tracks[0];
+
+		if (this.isPlaying) {
+			currentTrack.pause();
+			this.isPlaying = false;
+		} else {
+			this.isPlaying = true;
+			currentTrack.play();
+		}
+	}
+	subscribe(cb) {
+		console.log('player subscribe');
+		this.currentTrack.subscribe(cb);
 	}
 }
