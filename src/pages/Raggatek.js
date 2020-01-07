@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 // import fire from "../images/fire.gif";
 import speaker from "../images/speaker.jpg";
+import hardtekLife from "../music/track.mp3";
+import { throttle } from "lodash";
+import { Player } from "../components/player";
 
 const CIRCLE_DIAMETER = 500;
 const MAX_MEDIA_WIDTH = 1000;
@@ -17,8 +20,8 @@ const FirstScreen = styled.div`
 	align-items: center;
 	flex-wrap: wrap;
 
-	@media(max-width: ${MAX_MEDIA_WIDTH}px) {
-  }
+	@media (max-width: ${MAX_MEDIA_WIDTH}px) {
+	}
 `;
 
 const Side = styled.div`
@@ -27,10 +30,10 @@ const Side = styled.div`
 	text-align: center;
 	flex: 0 1 auto;
 
-	@media(max-width: ${MAX_MEDIA_WIDTH}px) {
+	@media (max-width: ${MAX_MEDIA_WIDTH}px) {
 		order: 2;
 		flex: 1 1 auto;
-  }
+	}
 `;
 
 const Center = styled.div`
@@ -40,7 +43,7 @@ const Center = styled.div`
 	justify-content: center;
 	align-items: center;
 
-	@media(max-width: ${MAX_MEDIA_WIDTH}px) {
+	@media (max-width: ${MAX_MEDIA_WIDTH}px) {
 		height: 100%;
 		order: 1;
 		width: 100%;
@@ -100,12 +103,47 @@ const Lewkan = styled.p`
 	-webkit-text-stroke-width: 2px;
 `;
 
-const HardtekPage = () => {
+
+const SpeakerPlayer = ({ player, children }) => {
+	const [scale, setScale] = useState(1);
 	const [isLoaded, setLoad] = useState(false);
-	useEffect(
-		() => void window.addEventListener("load", () => setLoad(true)),
-		[]
+
+	player.subscribe(
+		throttle(arr => {
+			const basses = arr.slice(5);
+			const avgSum =
+				basses.reduce((acc, curr) => {
+					let scale = (curr / 255) * 0.4;
+					scale = scale < 0 ? 1 : scale;
+					return acc + scale;
+				}, 0) / basses.length;
+				setScale(avgSum + 1);
+		}, 10)
 	);
+
+	useEffect(() => {
+		window.addEventListener("load", () => setLoad(true));
+		player.loadTrack(hardtekLife);
+	}, [player]);
+
+	const play = () => {
+		player.play();
+	};
+
+	return <Speaker
+		style={{ transform: `scale(${scale})` }}
+		isRunning={isLoaded}
+		onClick={play}
+	>
+		{children}
+	</Speaker>
+}
+
+
+const HardtekPage = () => {
+	const [player] = useState(new Player())
+
+
 	return (
 		<Background>
 			<FirstScreen>
@@ -115,12 +153,14 @@ const HardtekPage = () => {
 					<p>23:00</p>
 				</Side>
 				<Center>
-					<Speaker isRunning={isLoaded}>
+					<SpeakerPlayer
+						player={player}
+					>
 						<Lewkan>lewkan</Lewkan>
 						<p>x26x</p>
 						<p>birthday</p>
 						<p>fusion</p>
-					</Speaker>
+					</SpeakerPlayer>
 				</Center>
 				<Side>
 					ends:
