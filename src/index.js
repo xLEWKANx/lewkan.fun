@@ -7,8 +7,11 @@ import { createGlobalStyle } from "styled-components";
 import collegeFont from "./fonts/college.otf";
 import reglisseFont from "./fonts/reglisse.otf";
 import neon from "./fonts/screaming_neon.ttf";
+import { normalize } from "styled-normalize";
 
-createGlobalStyle`
+export const GlobalStyle = createGlobalStyle`
+	${normalize}
+
   @font-face {
     font-family: College;
     src: url('${collegeFont}') format('opentype');
@@ -35,6 +38,7 @@ createGlobalStyle`
 
 ReactDOM.render(
 	<BrowserRouter>
+		<GlobalStyle />
 		<App />
 	</BrowserRouter>,
 	document.getElementById("root")
