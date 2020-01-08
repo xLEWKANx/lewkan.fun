@@ -1,4 +1,4 @@
-import hardtekLife from "../music/Hardtek Life.mp3";
+import hardtekLife from "../music/Android52 - Anime Wav Groove Vol. 1&2 - 25 BASSLINE 5000.mp3";
 
 const FFT_SIZE = 256;
 
@@ -8,22 +8,20 @@ export class Track {
 	constructor(url) {
 		this.url = url;
 		this.context = new (window.AudioContext ||
-			window.webAudioContext ||
 			window.webkitAudioContext)();
 
 		this.analyser = this.context.createAnalyser();
+		this.gainNode = this.context.createGain()
 		this.analyser.fftSize = FFT_SIZE;
 		
 		const bufferLength = this.analyser.frequencyBinCount;
 
 		this.processor = this.context.createScriptProcessor(FFT_SIZE, 1, 1);
 		this.dataArray = new Uint8Array(bufferLength);
-		this.processor.connect(this.context.destination);
 
 		this.processor.onaudioprocess = () => {
 
 			this.analyser.getByteFrequencyData(this.dataArray) // For Bits
-			console.log('this.dataArray', this.dataArray);
 			// analyser.getByteTimeDomainData(this.state.framerFrequencyData) // For Waves
 			if (this.cb) this.cb(this.dataArray);
 		}
@@ -63,10 +61,11 @@ export class Track {
 						source.buffer = buffer;
 						source.loop = true;
 						source.connect(this.analyser);
-						source.connect(this.context.destination);
-
-						resolve(source);
+						this.analyser.connect(this.gainNode);
+						this.gainNode.connect(this.context.destination);
+						this.processor.connect(this.context.destination);
 						source.start(0);
+						resolve(source);
 						console.log("start playing");
 					},
 					reject
@@ -80,7 +79,6 @@ export class Track {
 		if (!this.sourcePromise) {
 			this.sourcePromise = this.decodeAudioData();
 		}
-
 		this.context.resume();
 		return Promise.resolve();
 	};

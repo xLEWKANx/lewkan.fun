@@ -124,7 +124,7 @@ const SpeakerPlayer = ({ player, children }) => {
 	}, [])
 
 	useEffect(() => {
-		window.addEventListener("load", () => setLoad(true));
+		window.addEventListener("load", () => void setLoad(true));
 	}, []);
 
 	const play = () => {
