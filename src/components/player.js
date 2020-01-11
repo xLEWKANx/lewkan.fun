@@ -1,4 +1,4 @@
-import hardtekLife from "../music/Android52 - Anime Wav Groove Vol. 1&2 - 25 BASSLINE 5000.mp3";
+import hardtekLife from "../music/Hardtek Life.mp3";
 
 const FFT_SIZE = 256;
 
@@ -66,7 +66,6 @@ export class Track {
 						this.processor.connect(this.context.destination);
 						source.start(0);
 						resolve(source);
-						console.log("start playing");
 					},
 					reject
 				);
@@ -75,7 +74,7 @@ export class Track {
 	};
 
 	play = () => {
-		console.log("is source availiable", !!this.sourcePromise);
+		console.log("is source available", !!this.sourcePromise);
 		if (!this.sourcePromise) {
 			this.sourcePromise = this.decodeAudioData();
 		}
@@ -112,7 +111,6 @@ export class Player {
 		}
 	}
 	subscribe(cb) {
-		console.log('player subscribe');
 		this.currentTrack.subscribe(cb);
 	}
 }
