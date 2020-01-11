@@ -1,7 +1,11 @@
 import React, { useState, useLayoutEffect } from "react";
 import styled from "styled-components";
 import { Player } from "./components/player";
-import { MAX_MEDIA_WIDTH, CIRCLE_DIAMETER, MIN_CIRCLE_DIAMETER } from "./config";
+import {
+	MAX_MEDIA_WIDTH,
+	CIRCLE_DIAMETER,
+	MIN_CIRCLE_DIAMETER,
+} from "./config";
 import { SpeakerPlayer } from "./components/SpeakerPlayer";
 import { ReactComponent as Spinner } from "./images/spinner.svg";
 import { ReactComponent as Play } from "./images/play.svg";
@@ -18,7 +22,7 @@ const TextLogo = styled.img`
 const Background = styled.div`
 	background-color: black;
 	color: white;
-	font-family: 'Comic Sans MS', 'Marker Felt', sans-serif;;
+	font-family: "Comic Sans MS", "Marker Felt", sans-serif;
 `;
 
 const FirstScreen = styled.div`
@@ -48,6 +52,10 @@ const Side = styled.div`
 			order: 1;
 		}
 	}
+`;
+
+const Link = styled.a`
+	color: magenta;
 `;
 
 const Center = styled.div`
@@ -94,28 +102,26 @@ const Text = styled.div`
 		width: 100%;
 		font-size: 14px;
 	}
-`; 
-
+`;
 
 const PlayerButton = ({ player }) => {
 	const [status, setStatus] = useState("pause");
-	
+
 	useLayoutEffect(() => {
 		player.context.addEventListener("play", () => setStatus("play"));
 		player.context.addEventListener("pause", () => setStatus("pause"));
 		player.context.addEventListener("loading", () => setStatus("loading"));
-	}, [])
+	}, []);
 
 	switch (status) {
-	case "play":
-		return <Pause />;
-	case "pause":
-		return <Play />;
-	default:
-		return <Spinner />;
+		case "play":
+			return <Pause />;
+		case "pause":
+			return <Play />;
+		default:
+			return <Spinner />;
 	}
 };
-
 
 const App = () => {
 	const [player] = useState(new Player());
@@ -143,9 +149,9 @@ const App = () => {
 			</FirstScreen>
 			<FusionContainer>
 				<Text>
-					Фьюжн, фьюжен (от англ. fusion, «сплав») — термин, который может входить
-					в название стилей и направлений в искусстве, архитектуре, дизайне,
-					музыке, характеризующихся «сочетанием несочетаемого», то есть
+					Фьюжн, фьюжен (от англ. fusion, «сплав») — термин, который может
+					входить в название стилей и направлений в искусстве, архитектуре,
+					дизайне, музыке, характеризующихся «сочетанием несочетаемого», то есть
 					объединяющих в себе совершенно разные идеи из, казалось бы,
 					несовместимых стилей, не теряя при этом целостности и гармонии.
 				</Text>
@@ -157,6 +163,7 @@ const App = () => {
 						<li>Light show</li>
 						<li>Magic Bar</li>
 						<li>Meet new people</li>
+						<li>Cool place in the Kyiv center</li>
 						<li>A lot of fun</li>
 					</ul>
 				</Text>
@@ -164,7 +171,12 @@ const App = () => {
 					<h2>Line Up:</h2>
 					TBA
 				</Text>
-
+				<Text>
+					Буду рад видеть тебя на этой вечеринке. Если ты заинтересован(а), пиши
+					за подробностями{" "}
+					<Link href="https://t.me/xlwknx"> мне в телеграмме</Link>.{" "}
+					<b>Поспеши</b>, количество мест <b>ограничено</b>!
+				</Text>
 			</FusionContainer>
 		</Background>
 	);
