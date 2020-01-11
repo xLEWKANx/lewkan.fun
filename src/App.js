@@ -86,13 +86,13 @@ const FusionContainer = styled.div`
 	padding: 20px;
 `;
 
-const Text = styled.p`
+const Text = styled.div`
 	margin: 20px auto;
-	min-width: 375px;
 	max-width: 800px;
 
 	@media (max-width: ${MAX_MEDIA_WIDTH}px) {
 		width: 100%;
+		font-size: 14px;
 	}
 `; 
 
