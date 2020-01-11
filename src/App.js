@@ -18,7 +18,7 @@ const TextLogo = styled.img`
 const Background = styled.div`
 	background-color: black;
 	color: white;
-	font-family: 'Comic Sans MS', Courier, monospace;
+	font-family: 'Comic Sans MS', 'Marker Felt', sans-serif;;
 `;
 
 const FirstScreen = styled.div`
