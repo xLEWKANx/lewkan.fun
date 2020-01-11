@@ -1,12 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import styled from "styled-components";
 import { Player } from "./components/player";
 import { MAX_MEDIA_WIDTH, CIRCLE_DIAMETER, MIN_CIRCLE_DIAMETER } from "./config";
 import { SpeakerPlayer } from "./components/SpeakerPlayer";
+import { ReactComponent as Spinner } from "./images/spinner.svg";
+import { ReactComponent as Play } from "./images/play.svg";
+import { ReactComponent as Pause } from "./images/pause.svg";
+import logo from "./images/logo.svg";
+import space from "./images/space.gif";
+
+const TextLogo = styled.img`
+	max-width: 95%;
+	height: 100%;
+	width: auto;
+`;
 
 const Background = styled.div`
 	background-color: black;
 	color: white;
+	font-family: 'Comic Sans MS', Courier, monospace;
 `;
 
 const FirstScreen = styled.div`
@@ -15,7 +27,7 @@ const FirstScreen = styled.div`
 	align-items: center;
 	justify-content: space-around;
 	flex-wrap: wrap;
-	background-image: url('https://media.giphy.com/media/3og0IFrHkIglEOg8Ba/giphy.gif');
+	background-image: url(${space});
 	background-size: cover;
 	background-position: 50% 50%;
 `;
@@ -26,7 +38,6 @@ const Side = styled.div`
 	text-align: center;
 	flex: 0 1 auto;
 	font-size: 32px;
-	font-family: 'Comic Sans MS', Courier, monospace;
 
 	@media (max-width: ${MAX_MEDIA_WIDTH}px) {
 		order: 3;
@@ -56,16 +67,58 @@ const Center = styled.div`
 	}
 `;
 
+const CenterContainer = styled.div`
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	position: absolute;
+`;
 
 const FusionContainer = styled.div`
 	background-color: rgba(0, 0, 0, 0.5);
 	font-size: 24px;
+	padding: 20px;
 `;
 
+const Text = styled.p`
+	margin: 20px auto;
+	min-width: 375px;
+	max-width: 800px;
 
-const HardtekPage = () => {
+	@media (max-width: ${MAX_MEDIA_WIDTH}px) {
+		width: 100%;
+	}
+`; 
+
+
+const PlayerButton = ({ player }) => {
+	const [status, setStatus] = useState("pause");
+	
+	useLayoutEffect(() => {
+		player.context.addEventListener("play", () => setStatus("play"));
+		player.context.addEventListener("pause", () => setStatus("pause"));
+		player.context.addEventListener("loading", () => setStatus("loading"));
+	}, [])
+
+	switch (status) {
+	case "play":
+		return <Pause />;
+	case "pause":
+		return <Play />;
+	default:
+		return <Spinner />;
+	}
+};
+
+
+const App = () => {
 	const [player] = useState(new Player());
-
 	return (
 		<Background>
 			<FirstScreen>
@@ -75,7 +128,12 @@ const HardtekPage = () => {
 					<p>23:00</p>
 				</Side>
 				<Center>
-					<SpeakerPlayer player={player}></SpeakerPlayer>
+					<SpeakerPlayer player={player}>
+						<TextLogo src={logo} />
+						<CenterContainer>
+							<PlayerButton player={player} />
+						</CenterContainer>
+					</SpeakerPlayer>
 				</Center>
 				<Side>
 					ends:
@@ -84,14 +142,32 @@ const HardtekPage = () => {
 				</Side>
 			</FirstScreen>
 			<FusionContainer>
-				Фьюжн, фьюжен (от англ. fusion, «сплав») — термин, который может входить
-				в название стилей и направлений в искусстве, архитектуре, дизайне,
-				музыке, характеризующихся «сочетанием несочетаемого», то есть
-				объединяющих в себе совершенно разные идеи из, казалось бы,
-				несовместимых стилей, не теряя при этом целостности и гармонии.
+				<Text>
+					Фьюжн, фьюжен (от англ. fusion, «сплав») — термин, который может входить
+					в название стилей и направлений в искусстве, архитектуре, дизайне,
+					музыке, характеризующихся «сочетанием несочетаемого», то есть
+					объединяющих в себе совершенно разные идеи из, казалось бы,
+					несовместимых стилей, не теряя при этом целостности и гармонии.
+				</Text>
+				<Text>
+					<h2>Вас ждет</h2>
+					<ul>
+						<li>Unique party experience</li>
+						<li>The best genres of underground electronic music</li>
+						<li>Light show</li>
+						<li>Magic Bar</li>
+						<li>Meet new people</li>
+						<li>A lot of fun</li>
+					</ul>
+				</Text>
+				<Text>
+					<h2>Line Up:</h2>
+					TBA
+				</Text>
+
 			</FusionContainer>
 		</Background>
 	);
 };
 
-export default HardtekPage;
+export default App;

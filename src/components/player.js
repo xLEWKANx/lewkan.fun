@@ -26,7 +26,6 @@ export class Track {
 			if (this.cb) this.cb(this.dataArray);
 		}
 
-
 	}
 
 	loadTrack = () => {
@@ -74,15 +73,19 @@ export class Track {
 	};
 
 	play = () => {
-		console.log("is source available", !!this.sourcePromise);
+		this.context.dispatchEvent(new Event("loading"));
 		if (!this.sourcePromise) {
 			this.sourcePromise = this.decodeAudioData();
 		}
+		this.sourcePromise.then(() => {
+			this.context.dispatchEvent(new Event("play"));
+		})
 		this.context.resume();
 		return Promise.resolve();
 	};
 
 	pause = () => {
+		this.context.dispatchEvent(new Event("pause"));
 		this.context.suspend();
 	};
 
@@ -97,6 +100,10 @@ export class Player {
 
 	get currentTrack () {
 		return this.tracks[0];
+	}
+
+	get context () {
+		return this.currentTrack.context;
 	}
 
 	play() {
