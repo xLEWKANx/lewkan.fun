@@ -12,6 +12,7 @@ import { ReactComponent as Play } from "./images/play.svg";
 import { ReactComponent as Pause } from "./images/pause.svg";
 import logo from "./images/logo.svg";
 import space from "./images/space.gif";
+import Helmet from "react-helmet";
 
 const TextLogo = styled.img`
 	max-width: 95%;
@@ -127,6 +128,9 @@ const App = () => {
 	const [player] = useState(new Player());
 	return (
 		<Background>
+			<Helmet>
+				<link rel="preload" href={space} />
+			</Helmet>
 			<FirstScreen>
 				<Side>
 					starts:
@@ -156,7 +160,7 @@ const App = () => {
 					несовместимых стилей, не теряя при этом целостности и гармонии.
 				</Text>
 				<Text>
-					<h2>Вас ждет</h2>
+					<h2>Тебя ждет:</h2>
 					<ul>
 						<li>Unique party experience</li>
 						<li>The best genres of underground electronic music</li>
