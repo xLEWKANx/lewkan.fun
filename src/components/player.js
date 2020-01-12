@@ -1,4 +1,4 @@
-import hardtekLife from "../music/Hardtek Life.mp3";
+import hardtekLife from "../music/track.mp3";
 
 const FFT_SIZE = 256;
 

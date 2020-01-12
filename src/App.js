@@ -162,7 +162,7 @@ const App = () => {
 				<Text>
 					<h2>Тебя ждет:</h2>
 					<ul>
-						<li>Unique party experience</li>
+						<li>Unique friendly party experience</li>
 						<li>True underground electronic music</li>
 						<li>Light show</li>
 						<li>Magic Bar</li>
@@ -179,10 +179,14 @@ const App = () => {
 					<p>TBA</p>
 				</Text>
 				<Text>
+					<h2>Info:</h2>
 					Буду рад видеть тебя на этой вечеринке. Если ты заинтересован(а), пиши
 					за подробностями{" "}
-					<Link href="https://t.me/xlwknx"> мне в телеграмме</Link>.{" "}
-					<b>Поспеши</b>, количество мест <b>ограничено</b>!
+					<Link href="https://t.me/xlwknx">мне в телеграмме</Link>. Денег за вход не прошу, но буду
+					рад подарку или free donation в фонд развития сильных движух. Для того,
+					чтобы попасть, нужно обязательно быть{" "}
+					<Link href="https://t.me/">в канале</Link>! <b>Поспеши</b>, количество
+					мест <b>ограничено</b>!
 				</Text>
 			</FusionContainer>
 		</Background>
