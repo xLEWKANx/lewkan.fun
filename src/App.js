@@ -163,7 +163,7 @@ const App = () => {
 					<h2>Тебя ждет:</h2>
 					<ul>
 						<li>Unique party experience</li>
-						<li>The best genres of underground electronic music</li>
+						<li>True underground electronic music</li>
 						<li>Light show</li>
 						<li>Magic Bar</li>
 						<li>Meet new people</li>
@@ -173,7 +173,10 @@ const App = () => {
 				</Text>
 				<Text>
 					<h2>Line Up:</h2>
-					TBA
+					<p>Nbomb (Psychedelic/Industrial)</p>
+					<p>KADILLLOVE (Techno)</p>
+					<p>CREE PPAK (House)</p>
+					<p>TBA</p>
 				</Text>
 				<Text>
 					Буду рад видеть тебя на этой вечеринке. Если ты заинтересован(а), пиши
