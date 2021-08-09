@@ -1,18 +1,19 @@
 import React, { useState, useLayoutEffect } from "react";
 import styled from "styled-components";
-import { Player } from "./components/player";
+import { Player } from "../components/player";
 import {
 	MAX_MEDIA_WIDTH,
 	CIRCLE_DIAMETER,
 	MIN_CIRCLE_DIAMETER,
-} from "./config";
-import { SpeakerPlayer } from "./components/SpeakerPlayer";
-import { ReactComponent as Spinner } from "./images/spinner.svg";
-import { ReactComponent as Play } from "./images/play.svg";
-import { ReactComponent as Pause } from "./images/pause.svg";
-import logo from "./images/logo.svg";
-import space from "./images/space.gif";
+} from "../config";
+import { SpeakerPlayer } from "../components/SpeakerPlayer";
+import { ReactComponent as Spinner } from "../images/spinner.svg";
+import { ReactComponent as Play } from "../images/play.svg";
+import { ReactComponent as Pause } from "../images/pause.svg";
+import logo from "../images/logo.svg";
+import space from "../images/space.gif";
 import Helmet from "react-helmet";
+import FusionLayout from "../features/fusion/FusionLayout";
 
 const TextLogo = styled.img`
 	max-width: 95%;
@@ -127,6 +128,8 @@ const PlayerButton = ({ player }) => {
 const App = () => {
 	const [player] = useState(new Player());
 	return (
+    <FusionLayout>
+
 		<Background>
 			<Helmet>
 				<link rel="preload" href={space} />
@@ -192,6 +195,7 @@ const App = () => {
 				</Text>
 			</FusionContainer>
 		</Background>
+    </FusionLayout>
 	);
 };
 
