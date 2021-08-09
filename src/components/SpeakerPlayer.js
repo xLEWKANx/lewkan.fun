@@ -33,6 +33,7 @@ export const SpeakerPlayer = ({ player, children }) => {
 	const [scale, setScale] = useState(1);
 
 	useEffect(() => {
+    if (!player) return;
 		player.subscribe(arr => {
 			const basses = arr.slice(10);
 			const avgSum =
@@ -43,9 +44,9 @@ export const SpeakerPlayer = ({ player, children }) => {
 				}, 0) / basses.length;
 			setScale(avgSum + 1);
 		});
-	}, []);
+	}, [player]);
 
-	const play = () => player.play();
+	const play = () => player && player.play();
 
 	return (
 		<Speaker

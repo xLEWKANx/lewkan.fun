@@ -1,19 +1,19 @@
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Player } from "../components/player";
+import { Player } from "../../components/player";
 import {
 	MAX_MEDIA_WIDTH,
 	CIRCLE_DIAMETER,
 	MIN_CIRCLE_DIAMETER,
-} from "../config";
-import { SpeakerPlayer } from "../components/SpeakerPlayer";
-import { ReactComponent as Spinner } from "../images/spinner.svg";
-import { ReactComponent as Play } from "../images/play.svg";
-import { ReactComponent as Pause } from "../images/pause.svg";
-import logo from "../images/logo.svg";
-import space from "../images/space.gif";
+} from "../../config";
+import { SpeakerPlayer } from "../../components/SpeakerPlayer";
+import { ReactComponent as Spinner } from "../../images/spinner.svg";
+import { ReactComponent as Play } from "../../images/play.svg";
+import { ReactComponent as Pause } from "../../images/pause.svg";
+import logo from "../../images/logo.svg";
+import space from "../../images/space.gif";
 import Helmet from "react-helmet";
-import FusionLayout from "../features/fusion/FusionLayout";
+import FusionLayout from "../../features/fusion/FusionLayout";
 
 const TextLogo = styled.img`
 	max-width: 95%;
@@ -108,12 +108,15 @@ const Text = styled.div`
 
 const PlayerButton = ({ player }) => {
 	const [status, setStatus] = useState("pause");
-
-	useLayoutEffect(() => {
+  
+	useEffect(() => {
+    if (!player) return null;
 		player.context.addEventListener("play", () => setStatus("play"));
 		player.context.addEventListener("pause", () => setStatus("pause"));
 		player.context.addEventListener("loading", () => setStatus("loading"));
-	}, []);
+	}, [player]);
+
+  if (!player) return null;
 
 	switch (status) {
 		case "play":
@@ -126,7 +129,12 @@ const PlayerButton = ({ player }) => {
 };
 
 const App = () => {
-	const [player] = useState(new Player());
+	const [player, setPlayer] = useState(null);
+
+  useEffect(() => {
+    setPlayer(new Player())
+  }, [])
+
 	return (
     <FusionLayout>
 
