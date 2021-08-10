@@ -10,11 +10,13 @@ module.exports = {
     "prettier",
     "plugin:prettier/recommended",
   ],
+  parser: "babel-eslint",
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
+      experimentalObjectRestSpread: true,
     },
-    ecmaVersion: 12,
+    ecmaVersion: "latest",
     sourceType: "module",
   },
   plugins: ["react"],
@@ -25,6 +27,6 @@ module.exports = {
     indent: ["warn", 2],
     "linebreak-style": ["error", "unix"],
     quotes: ["warn", "double"],
-    semi: ["error", "never"],
+    semi: ["error", "always"],
   },
-}
+};

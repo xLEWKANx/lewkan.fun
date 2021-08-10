@@ -1,4 +1,5 @@
-import hardtekLife from "../music/track.mp3";
+import track from "../music/track.mp3";
+import AudioContext from "../features/audio-processing/AudioContext"
 
 const FFT_SIZE = 256;
 
@@ -7,9 +8,7 @@ export class Track {
 
 	constructor(url) {
 		this.url = url;
-		this.context = new (window.AudioContext ||
-			window.webkitAudioContext)();
-
+		this.context = new AudioContext()
 		this.analyser = this.context.createAnalyser();
 		this.gainNode = this.context.createGain()
 		this.analyser.fftSize = FFT_SIZE;
@@ -25,11 +24,9 @@ export class Track {
 			// analyser.getByteTimeDomainData(this.state.framerFrequencyData) // For Waves
 			if (this.cb) this.cb(this.dataArray);
 		}
-
 	}
 
 	loadTrack = () => {
-		if (this.bufferPromise) return this.bufferPromise;
 		return fetch(this.url).then(response => {
 			if (!response.ok) {
 				throw Error(`${response.status} ${response.statusText}`);
@@ -95,7 +92,7 @@ export class Track {
 }
 
 export class Player {
-	tracks = [new Track(hardtekLife)];
+	tracks = [new Track(track)];
 	isPlaying = false;
 
 	get currentTrack () {
