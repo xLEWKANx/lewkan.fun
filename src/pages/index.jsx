@@ -1,6 +1,6 @@
 import butterchurnPresets from "butterchurn-presets";
 import styled from "styled-components";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import track from "../music/home-track.mp3";
 import AudioContext from "../features/audio-processing/AudioContext";
 import { TrackLoader } from "../features/audio-processing/TrackLoader";
@@ -87,11 +87,13 @@ class VisualController {
 
 const IndexPage = ({}) => {
   const canvasRef = useRef();
+  const [visualCtrlState, setVisualCtrl] = useState();
 
   useEffect(() => {
     import("butterchurn").then(({ default: butterchurn }) => {
       console.log('module', module)
       const visualCtrl = new VisualController(canvasRef.current, butterchurn);
+      setVisualCtrl(visualCtrl)
       const setSize = () => {
         const w = document.documentElement.clientWidth;
         const h = document.documentElement.clientHeight;
@@ -101,8 +103,7 @@ const IndexPage = ({}) => {
       }
 
       visualCtrl.loadTrack();
-      visualCtrl.start();
-  
+      visualCtrl.startRenderer();
       setSize();
       window.addEventListener('resize', setSize, true);
     })
@@ -110,10 +111,16 @@ const IndexPage = ({}) => {
 
   }, []);
 
+  const play = () => {
+    if (visualCtrlState) visualCtrlState.startPlay()
+  }
+
   return (
     <div>
       <Normalize />
-      <canvas ref={canvasRef}></canvas>
+
+
+        <canvas  onClick={play}ref={canvasRef}></canvas>
     </div>
   );
 };
