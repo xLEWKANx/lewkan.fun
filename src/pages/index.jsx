@@ -1,7 +1,7 @@
 import butterchurnPresets from "butterchurn-presets";
 import styled from "styled-components";
 import { useEffect, useRef } from "react";
-import track from "../music/GUMI-マシェリリック-オリジナル曲 _320kbps.mp3";
+import track from "../music/home-track.mp3";
 import AudioContext from "../features/audio-processing/AudioContext";
 import { TrackLoader } from "../features/audio-processing/TrackLoader";
 import { TrackDecoder } from "../features/audio-processing/TrackDecoder";
