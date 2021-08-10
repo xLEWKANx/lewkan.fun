@@ -1,4 +1,3 @@
-import butterchurn from "butterchurn";
 import butterchurnPresets from "butterchurn-presets";
 import styled from "styled-components";
 import { useEffect, useRef } from "react";
@@ -9,7 +8,7 @@ import { TrackDecoder } from "../features/audio-processing/TrackDecoder";
 import { Normalize } from "styled-normalize";
 
 class VisualController {
-  constructor(canvas) {
+  constructor(canvas, butterchurn) {
     this.audioCtx = new AudioContext();;
     this.source = this.audioCtx.createBufferSource();
     this.visualizer = butterchurn.createVisualizer(
@@ -90,22 +89,24 @@ const IndexPage = ({}) => {
   const canvasRef = useRef();
 
   useEffect(() => {
-    const visualCtrl = new VisualController(canvasRef.current);
+    import("butterchurn").then(({ default: butterchurn }) => {
+      console.log('module', module)
+      const visualCtrl = new VisualController(canvasRef.current, butterchurn);
+      const setSize = () => {
+        const w = document.documentElement.clientWidth;
+        const h = document.documentElement.clientHeight;
+        canvasRef.current.width = w;
+        canvasRef.current.height = h;
+        visualCtrl.setSize(w, h);
+      }
 
-    visualCtrl.loadTrack();
-    visualCtrl.start();
-
-    const setSize = () => {
-      const w = document.documentElement.clientWidth;
-      const h = document.documentElement.clientHeight;
-      canvasRef.current.width = w;
-      canvasRef.current.height = h;
-      visualCtrl.setSize(w, h);
-    }
-
-    setSize();
-
-    window.addEventListener('resize', setSize, true);
+      visualCtrl.loadTrack();
+      visualCtrl.start();
+  
+      setSize();
+      window.addEventListener('resize', setSize, true);
+    })
+    
 
   }, []);
 
