@@ -8,6 +8,7 @@ import { TrackDecoder } from "../features/audio-processing/TrackDecoder";
 import { Normalize } from "styled-normalize";
 import heroImg from "../images/hero-image-3.png"
 import { ReactComponent as Logo } from "../images/lewkan-logo-white.svg";
+import { mediaQueries } from "../screenSizes" 
 
 class VisualController {
   constructor(canvas, butterchurn) {
@@ -92,6 +93,7 @@ const HeroContainer = styled.div`
   position: relative;
   cursor: pointer;
   height: 100vh;
+  overflow: hidden;
 `
 
 const StyledLogo = styled(Logo)`
@@ -101,9 +103,14 @@ const StyledLogo = styled(Logo)`
 const HeroImage = styled.img`
   position: absolute;
   bottom: 0;
-  right: 20px;
-  height: 100vh;
   pointer-events: none;
+  height: 70vh;
+  right: -30%;
+
+  @media ${mediaQueries.sm} {
+    height: 100vh;
+    right: 20px;
+  }
 `
 
 const Canvas = styled.canvas`
