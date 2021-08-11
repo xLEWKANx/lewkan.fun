@@ -1,4 +1,4 @@
-import butterchurnPresets from "butterchurn-presets";
+import butterchurnPresets from "butterchurn-presets/lib/butterchurnPresetsMD1.min.js";
 import styled from "styled-components";
 import { useEffect, useRef, useState } from "react";
 import track from "../music/home-track.mp3";
@@ -6,6 +6,8 @@ import AudioContext from "../features/audio-processing/AudioContext";
 import { TrackLoader } from "../features/audio-processing/TrackLoader";
 import { TrackDecoder } from "../features/audio-processing/TrackDecoder";
 import { Normalize } from "styled-normalize";
+import heroImg from "../images/hero-image-3.png"
+import { ReactComponent as Logo } from "../images/lewkan-logo-white.svg";
 
 class VisualController {
   constructor(canvas, butterchurn) {
@@ -65,10 +67,11 @@ class VisualController {
     this.startPlay()
   }
 
-  configurePresets = () => {
+  configurePresets = (presetName) => {
     const presets = butterchurnPresets.getPresets();
+    console.log('presets', presets)
     const preset =
-      presets["Flexi, martin + geiss - dedicated to the sherwin maxawow"];
+      presets[presetName];
     this.visualizer.loadPreset(preset, 0.0);
   }
 
@@ -85,6 +88,33 @@ class VisualController {
 
 }
 
+const HeroContainer = styled.div`
+  position: relative;
+  height: 100vh;
+`
+
+const StyledLogo = styled(Logo)`
+  padding: 25px 30px;
+`
+
+const HeroImage = styled.img`
+  position: absolute;
+  bottom: 0;
+  right: 20px;
+  height: 100vh;
+  pointer-events: none;
+`
+
+const Canvas = styled.canvas`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  cursor: pointer;
+  z-index: -1;
+`
+
 const IndexPage = ({}) => {
   const canvasRef = useRef();
   const [visualCtrlState, setVisualCtrl] = useState();
@@ -94,6 +124,7 @@ const IndexPage = ({}) => {
       console.log('module', module)
       const visualCtrl = new VisualController(canvasRef.current, butterchurn);
       setVisualCtrl(visualCtrl)
+      // visualCtrl.configurePresets("Rozzor & Shreyas - Deeper Aesthetics");
       const setSize = () => {
         const w = document.documentElement.clientWidth;
         const h = document.documentElement.clientHeight;
@@ -116,12 +147,14 @@ const IndexPage = ({}) => {
   }
 
   return (
-    <div>
+    <HeroContainer>
       <Normalize />
-
-
-        <canvas  onClick={play}ref={canvasRef}></canvas>
-    </div>
+        <header>
+          <StyledLogo width={150} />
+        </header>
+        <Canvas onClick={play} ref={canvasRef} />
+        <HeroImage src={heroImg} />
+    </HeroContainer>
   );
 };
 
