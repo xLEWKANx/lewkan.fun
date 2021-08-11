@@ -90,6 +90,7 @@ class VisualController {
 
 const HeroContainer = styled.div`
   position: relative;
+  cursor: pointer;
   height: 100vh;
 `
 
@@ -111,7 +112,6 @@ const Canvas = styled.canvas`
   left: 0;
   right: 0;
   bottom: 0;
-  cursor: pointer;
   z-index: -1;
 `
 
@@ -147,12 +147,12 @@ const IndexPage = ({}) => {
   }
 
   return (
-    <HeroContainer>
+    <HeroContainer onClick={play}>
       <Normalize />
         <header>
           <StyledLogo width={150} />
         </header>
-        <Canvas onClick={play} ref={canvasRef} />
+        <Canvas  ref={canvasRef} />
         <HeroImage src={heroImg} />
     </HeroContainer>
   );
