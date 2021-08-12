@@ -6,7 +6,6 @@ import { ReactComponent as Logo } from "../images/lewkan-logo-white.svg";
 import { mediaQueries } from "../screenSizes" 
 import Burger from "../components/header/Burger";
 import VisualController from "../features/audio-visual-processing/VisualController";
-import { enumDefaultedMember } from "@babel/types";
 
 const HeroContainer = styled.div`
   position: relative;
@@ -26,10 +25,6 @@ const Header = styled.header`
   z-index: 1;
 
   transition: all 0.3s;
-
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.5);
-  }
 `
 
 const StyledLogo = styled(Logo)`
@@ -38,6 +33,11 @@ const StyledLogo = styled(Logo)`
 `
 
 const StyledBurger = styled(Burger)`
+
+  .menu-icon {
+    background-color: white;
+  }
+  
   @media ${mediaQueries.md} {
     display: none;
   }
@@ -62,6 +62,7 @@ const Canvas = styled.canvas`
   left: 0;
   right: 0;
   bottom: 0;
+  filter: saturate(30%) opacity(70%);
 `
 
 const IndexPage = ({}) => {

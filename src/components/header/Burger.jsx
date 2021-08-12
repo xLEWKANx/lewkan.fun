@@ -2,15 +2,16 @@ import { useState } from "react"
 import styled, { css } from "styled-components"
 
 const openState = css`
-  .menu-icon {
-    background: transparent;
+  .menu-icon:nth-child(2) {
+    opacity: 0;
+    z-index: -1;
   }
 
-  .menu-icon::before {
+  .menu-icon:nth-child(1) {
     transform: translateY(350%) rotate(calc(2 * 360deg + 45deg));
   }
 
-  .menu-icon::after {
+  .menu-icon:nth-child(3) {
     transform: translateY(-350%) rotate(calc(2 * -360deg + -45deg));
   }
 `
@@ -35,27 +36,27 @@ const BurgerContainer = styled.button`
     width: 60px;
     height: 6px;
     border-radius: 2.5px;
-    background-color: white;
     left: 0;
     transform-origin: 50% 50%;
     transition: all .5s ease-out;
   }
 
   .menu-icon {
-    position: relative;
-  }
-
-  .menu-icon::after, .menu-icon::before {
-    content: "";
     position: absolute;
+    left: calc(50% - 30px);
   }
 
-  .menu-icon::before {
-    top: -21px;
+
+  .menu-icon:nth-child(1) {
+    top: calc(50% - 21px);
   }
 
-  .menu-icon::after {
-    top: 21px;
+  .menu-icon:nth-child(2) {
+    top: calc(50%);
+  }
+
+  .menu-icon:nth-child(3) {
+    top: calc(50% + 21px);
   }
 
   ${({ isOpen }) => isOpen && openState}
@@ -71,6 +72,8 @@ export default function Burger({ onClick, ...props}) {
 
   return (
     <BurgerContainer onClick={handleClick} isOpen={isOpen} {...props}>
+      <span className="menu-icon" />
+      <span className="menu-icon" />
       <span className="menu-icon" />
     </BurgerContainer>
   )
