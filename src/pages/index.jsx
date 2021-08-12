@@ -1,93 +1,12 @@
-import butterchurnPresets from "butterchurn-presets/lib/butterchurnPresetsMD1.min.js";
 import styled from "styled-components";
 import { useEffect, useRef, useState } from "react";
-import track from "../music/home-track.mp3";
-import AudioContext from "../features/audio-processing/AudioContext";
-import { TrackLoader } from "../features/audio-processing/TrackLoader";
-import { TrackDecoder } from "../features/audio-processing/TrackDecoder";
 import { Normalize } from "styled-normalize";
 import heroImg from "../images/hero-image-3.png"
 import { ReactComponent as Logo } from "../images/lewkan-logo-white.svg";
 import { mediaQueries } from "../screenSizes" 
-
-class VisualController {
-  constructor(canvas, butterchurn) {
-    this.audioCtx = new AudioContext();;
-    this.source = this.audioCtx.createBufferSource();
-    this.visualizer = butterchurn.createVisualizer(
-      this.audioCtx,
-      canvas,
-      {
-        width: 800,
-        height: 600,
-      }
-    );
-  }
-
-  addBuffer = (buffer) => {
-    this.source.buffer = buffer;
-    return this;
-  }
-
-  setSourceOptions = (options) => {
-    Object.assign(this.source, options) 
-    return this;
-  }
-
-  setSize = (width, height) => {
-    this.visualizer.setRendererSize(width, height)
-  }
-
-  refreshDelayNode() {
-    if(this.delayedAudio) {
-      delayedAudible.disconnect();
-    }
-
-    this.delayedAudio = this.audioCtx.createDelay();
-    this.delayedAudio.delayTime.value = 0.26;
-  }
-
-  connectToAudioAnalyzer() {
-    this.refreshDelayNode()
-    this.source.connect(this.delayedAudio)
-    this.delayedAudio.connect(this.audioCtx.destination);
-    this.visualizer.connectAudio(this.delayedAudio);
-  }
-
-  startRenderer = () => {
-    requestAnimationFrame(() => this.startRenderer());
-    this.visualizer.render();
-  }
-
-  startPlay = () => {
-    this.source.start(0);
-  }
-
-  start = () => {
-    this.startRenderer()
-    this.startPlay()
-  }
-
-  configurePresets = (presetName) => {
-    const presets = butterchurnPresets.getPresets();
-    console.log('presets', presets)
-    const preset =
-      presets[presetName];
-    this.visualizer.loadPreset(preset, 0.0);
-  }
-
-  loadTrack = () => {
-    const loadingTrack = new TrackLoader(track);
-    const decoder = new TrackDecoder(this.audioCtx)
-
-    this.connectToAudioAnalyzer()
-
-    this.loadingPromise = loadingTrack.loadFullTrackBuffer()
-      .then(decoder.decode)
-      .then(this.addBuffer)
-  }
-
-}
+import Burger from "../components/header/Burger";
+import VisualController from "../features/audio-visual-processing/VisualController";
+import { enumDefaultedMember } from "@babel/types";
 
 const HeroContainer = styled.div`
   position: relative;
@@ -96,8 +15,32 @@ const HeroContainer = styled.div`
   overflow: hidden;
 `
 
+const Header = styled.header`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1;
+
+  transition: all 0.3s;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+`
+
 const StyledLogo = styled(Logo)`
   padding: 25px 30px;
+  transition: all 0.3s;
+`
+
+const StyledBurger = styled(Burger)`
+  @media ${mediaQueries.md} {
+    display: none;
+  }
 `
 
 const HeroImage = styled.img`
@@ -119,7 +62,6 @@ const Canvas = styled.canvas`
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: -1;
 `
 
 const IndexPage = ({}) => {
@@ -128,10 +70,8 @@ const IndexPage = ({}) => {
 
   useEffect(() => {
     import("butterchurn").then(({ default: butterchurn }) => {
-      console.log('module', module)
       const visualCtrl = new VisualController(canvasRef.current, butterchurn);
       setVisualCtrl(visualCtrl)
-      // visualCtrl.configurePresets("Rozzor & Shreyas - Deeper Aesthetics");
       const setSize = () => {
         const w = document.documentElement.clientWidth;
         const h = document.documentElement.clientHeight;
@@ -151,17 +91,21 @@ const IndexPage = ({}) => {
 
   const play = () => {
     if (visualCtrlState) visualCtrlState.startPlay()
+    visualCtrlState.configurePresets("Rozzor & Shreyas - Deeper Aesthetics");
   }
 
   return (
-    <HeroContainer onClick={play}>
+    <div style={{ height: 5000, backgroundColor: "black"}}>
+    <Header>
+      <StyledLogo width={150} />
+      <StyledBurger />
+    </Header>
+    <HeroContainer>
       <Normalize />
-        <header>
-          <StyledLogo width={150} />
-        </header>
-        <Canvas  ref={canvasRef} />
+        <Canvas onClick={play} ref={canvasRef} />
         <HeroImage src={heroImg} />
     </HeroContainer>
+    </div>
   );
 };
 
